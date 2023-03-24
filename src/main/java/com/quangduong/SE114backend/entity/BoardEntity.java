@@ -22,4 +22,36 @@ public class BoardEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "board")
     private List<TableEntity> tables = new ArrayList<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UserEntity getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(UserEntity admin) {
+        this.admin = admin;
+    }
+
+    public List<UserEntity> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<UserEntity> members) {
+        this.members = members;
+    }
+
+    public List<TableEntity> getTables() {
+        return tables;
+    }
+
+    public void setTables(List<TableEntity> tables) {
+        this.tables = tables;
+    }
 }

@@ -23,4 +23,35 @@ public class TableEntity extends BaseEntity {
     @OneToMany(mappedBy = "table")
     private List<TaskEntity> tasks = new ArrayList<>();
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BoardEntity getBoard() {
+        return board;
+    }
+
+    public void setBoard(BoardEntity board) {
+        this.board = board;
+    }
+
+    public List<UserEntity> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<UserEntity> members) {
+        this.members = members;
+    }
+
+    public List<TaskEntity> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskEntity> tasks) {
+        this.tasks = tasks;
+    }
 }

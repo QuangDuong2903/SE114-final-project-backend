@@ -20,7 +20,7 @@ public class BoardEntity extends BaseEntity {
     @JoinTable(name = "user_board", joinColumns = @JoinColumn(name = "board_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<TableEntity> tables = new ArrayList<>();
 
     public String getName() {

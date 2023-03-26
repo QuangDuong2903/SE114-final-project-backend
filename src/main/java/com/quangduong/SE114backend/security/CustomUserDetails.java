@@ -56,4 +56,12 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

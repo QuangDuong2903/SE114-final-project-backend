@@ -18,11 +18,10 @@ public class JwtUtils {
     @Autowired
     private Environment environment;
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    public String generateToken(Authentication authentication) {
+    public String generateToken(String email) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + environment.getProperty("jwt.expiration"));
-        CustomUserDetails userDetail = (CustomUserDetails) authentication.getPrincipal();
-        return Jwts.builder().setSubject(userDetail.getUsername()).setIssuedAt(now).setExpiration(expiryDate)
+        Date expiryDate = new Date(now.getTime() + Long.parseLong(environment.getProperty("jwt.expiration")));
+        return Jwts.builder().setSubject(email).setIssuedAt(now).setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, environment.getProperty("jwt.secret")).compact();
     }
 

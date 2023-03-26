@@ -10,6 +10,22 @@ public class ErrorResponse {
     private String error;
     private String url;
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
     public ErrorResponse(int status, String error, String url) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         this.timestamp = dateFormat.format(new Date());

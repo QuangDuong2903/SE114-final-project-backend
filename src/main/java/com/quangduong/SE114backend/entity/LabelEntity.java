@@ -19,6 +19,38 @@ public class LabelEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "value")
+    @OneToMany(mappedBy = "value", cascade = CascadeType.ALL)
     private List<LabelAttributeEntity> labelAttributes = new ArrayList<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public List<LabelAttributeEntity> getLabelAttributes() {
+        return labelAttributes;
+    }
+
+    public void setLabelAttributes(List<LabelAttributeEntity> labelAttributes) {
+        this.labelAttributes = labelAttributes;
+    }
 }

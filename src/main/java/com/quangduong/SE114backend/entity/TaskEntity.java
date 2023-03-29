@@ -17,16 +17,16 @@ public class TaskEntity extends BaseEntity {
     @JoinColumn(name = "table_id")
     private TableEntity table;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<TextAttributeEntity> textAttributes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<NumberAttributeEntity> numberAttributes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<DateAttributeEntity> dateAttributes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<LabelAttributeEntity> labelAttributes = new ArrayList<>();
 
     public UserEntity getUser() {

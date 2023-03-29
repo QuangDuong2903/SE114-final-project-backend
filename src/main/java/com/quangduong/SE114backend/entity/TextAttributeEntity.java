@@ -18,4 +18,5 @@ public class TextAttributeEntity extends AttributeEntity {
     public void setValue(String value) {
         this.value = value;
     }
+
 }

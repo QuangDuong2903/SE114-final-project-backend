@@ -16,6 +16,12 @@ public class NumberAttributeMapper {
         return entity;
     }
 
+    public NumberAttributeEntity toEntity(NumberAttributeDTO dto, NumberAttributeEntity entity) {
+        entity.setName(dto.getName());
+        entity.setValue(dto.getValue());
+        return entity;
+    }
+
     public NumberAttributeDTO toDTO(NumberAttributeEntity entity) {
         NumberAttributeDTO dto = new NumberAttributeDTO();
         dto.setId(entity.getId());

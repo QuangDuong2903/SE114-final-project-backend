@@ -16,6 +16,12 @@ public class DateAttributeMapper {
         return entity;
     }
 
+    public DateAttributeEntity toEntity(DateAttributeDTO dto, DateAttributeEntity entity) {
+        entity.setName(dto.getName());
+        entity.setValue(dto.getValue());
+        return entity;
+    }
+
     public DateAttributeDTO toDTO(DateAttributeEntity entity) {
         DateAttributeDTO dto = new DateAttributeDTO();
         dto.setId(entity.getId());

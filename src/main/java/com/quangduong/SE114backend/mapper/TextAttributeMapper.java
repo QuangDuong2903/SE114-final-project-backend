@@ -14,6 +14,12 @@ public class TextAttributeMapper {
         return entity;
     }
 
+    public TextAttributeEntity toEntity(TextAttributeDTO dto, TextAttributeEntity entity) {
+        entity.setName(dto.getName());
+        entity.setValue(dto.getValue());
+        return entity;
+    }
+
     public TextAttributeDTO toDTO(TextAttributeEntity entity) {
         TextAttributeDTO dto = new TextAttributeDTO();
         dto.setId(entity.getId());

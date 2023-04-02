@@ -2,15 +2,15 @@ package com.quangduong.SE114backend.dto.attribute;
 
 public class LabelAttributeDTO {
 
-    private long id;
+    private Long id;
     private String name;
     private long labelId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

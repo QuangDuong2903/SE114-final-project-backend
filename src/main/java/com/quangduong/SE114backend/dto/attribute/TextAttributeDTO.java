@@ -2,7 +2,7 @@ package com.quangduong.SE114backend.dto.attribute;
 
 public class TextAttributeDTO {
 
-    private long id;
+    private Long id;
     private String name;
     private String value;
 
@@ -22,11 +22,11 @@ public class TextAttributeDTO {
         this.value = value;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

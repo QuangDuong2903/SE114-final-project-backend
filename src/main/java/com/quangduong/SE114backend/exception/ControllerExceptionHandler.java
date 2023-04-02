@@ -51,7 +51,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> globalExceptionHandler(Exception e, HttpServletRequest request) {
-        logger.error("Exception: ", e.getCause());
+        logger.error("Exception: ", e.getMessage());
         return ResponseEntity.internalServerError().body(new ErrorResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                 "INTERNAL SERVER ERROR", request.getRequestURI()));
     }

@@ -2,7 +2,7 @@ package com.quangduong.SE114backend.api;
 
 import com.quangduong.SE114backend.dto.task.TaskDTO;
 import com.quangduong.SE114backend.dto.task.TaskUpdateDTO;
-import com.quangduong.SE114backend.repository.TextAttributeRepository;
+import com.quangduong.SE114backend.repository.sql.TextAttributeRepository;
 import com.quangduong.SE114backend.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

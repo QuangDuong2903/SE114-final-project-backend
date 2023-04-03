@@ -2,14 +2,11 @@ package com.quangduong.SE114backend.service.impl;
 
 import com.quangduong.SE114backend.dto.task.TaskDTO;
 import com.quangduong.SE114backend.dto.task.TaskUpdateDTO;
-import com.quangduong.SE114backend.entity.TableEntity;
 import com.quangduong.SE114backend.entity.TaskEntity;
-import com.quangduong.SE114backend.exception.NoPermissionException;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
 import com.quangduong.SE114backend.mapper.TaskMapper;
-import com.quangduong.SE114backend.repository.*;
+import com.quangduong.SE114backend.repository.sql.*;
 import com.quangduong.SE114backend.service.TaskService;
-import com.quangduong.SE114backend.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

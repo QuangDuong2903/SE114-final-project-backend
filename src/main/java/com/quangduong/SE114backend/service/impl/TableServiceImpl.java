@@ -6,7 +6,7 @@ import com.quangduong.SE114backend.entity.TableEntity;
 import com.quangduong.SE114backend.exception.NoPermissionException;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
 import com.quangduong.SE114backend.mapper.TableMapper;
-import com.quangduong.SE114backend.repository.TableRepository;
+import com.quangduong.SE114backend.repository.sql.TableRepository;
 import com.quangduong.SE114backend.service.TableService;
 import com.quangduong.SE114backend.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

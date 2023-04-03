@@ -2,7 +2,7 @@ package com.quangduong.SE114backend.security;
 
 import com.quangduong.SE114backend.constant.UserStatus;
 import com.quangduong.SE114backend.entity.UserEntity;
-import com.quangduong.SE114backend.repository.UserRepository;
+import com.quangduong.SE114backend.repository.sql.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

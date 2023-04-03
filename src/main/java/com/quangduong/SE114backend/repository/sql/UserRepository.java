@@ -1,4 +1,4 @@
-package com.quangduong.SE114backend.repository;
+package com.quangduong.SE114backend.repository.sql;
 
 import com.quangduong.SE114backend.constant.UserStatus;
 import com.quangduong.SE114backend.entity.UserEntity;

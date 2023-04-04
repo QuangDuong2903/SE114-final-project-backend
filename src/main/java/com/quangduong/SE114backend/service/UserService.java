@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserService {
 
     public UserDTO createUser(UserDTO dto);
-    List<UserDTO> findUser(String keyword, Pageable pageable);
+    //List<UserDTO> findUser(String keyword, Pageable pageable);
 }

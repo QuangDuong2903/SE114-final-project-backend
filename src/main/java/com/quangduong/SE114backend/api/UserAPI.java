@@ -20,11 +20,11 @@ public class UserAPI {
     @Autowired
     private UserService userService;
 
-//    @GetMapping
-//    public ResponseEntity<FindUsersResponse> findUser(@RequestParam("page") int page, @RequestParam("keyword") String keyword) {
-//        Pageable pageable = PageRequest.of(page - 1, 2);
-//        return ResponseEntity.ok(new FindUsersResponse(page, userService.findUser(keyword, pageable)));
-//    }
+    @GetMapping
+    public ResponseEntity<FindUsersResponse> findUser(@RequestParam("page") int page, @RequestParam("keyword") String keyword) {
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        return ResponseEntity.ok(new FindUsersResponse(page, userService.findUser(keyword, pageable)));
+    }
 
 
     record FindUsersResponse(int page, List<UserDTO> users) {

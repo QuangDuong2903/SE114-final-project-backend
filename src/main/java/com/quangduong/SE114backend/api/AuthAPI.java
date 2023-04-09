@@ -1,5 +1,6 @@
 package com.quangduong.SE114backend.api;
 
+import com.quangduong.SE114backend.dto.user.UserBoard;
 import com.quangduong.SE114backend.dto.user.UserDTO;
 import com.quangduong.SE114backend.service.UserService;
 import com.quangduong.SE114backend.utils.JwtUtils;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("auth")
@@ -28,9 +31,11 @@ public class AuthAPI {
                 user.getEmail(),
                 user.getDisplayName(),
                 user.getPhotoUrl(),
-                jwtUtils.generateToken(user.getEmail()))
+                jwtUtils.generateToken(user.getEmail()),
+                user.getBoards())
         );
     }
 
-    record LoginResponse(long id, String email, String displayName, String photoUrl, String token) {}
+    record LoginResponse(long id, String email, String displayName, String photoUrl, String token, List<UserBoard> boards) {}
+
 }

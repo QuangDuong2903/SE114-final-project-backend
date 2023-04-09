@@ -1,10 +1,17 @@
 package com.quangduong.SE114backend.mapper;
 
 import com.quangduong.SE114backend.constant.UserStatus;
+import com.quangduong.SE114backend.dto.user.UserBoard;
 import com.quangduong.SE114backend.dto.user.UserDTO;
+import com.quangduong.SE114backend.entity.BoardEntity;
 import com.quangduong.SE114backend.entity.UserEntity;
 import com.quangduong.SE114backend.model.UserModel;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -17,6 +24,13 @@ public class UserMapper {
         dto.setGivenName(entity.getGivenName());
         dto.setEmail(entity.getEmail());
         dto.setPhotoUrl(entity.getPhotoUrl());
+        List<BoardEntity> boardEntities = new ArrayList<>();
+        boardEntities.addAll(entity.getOwnerBoards());
+        boardEntities.addAll(entity.getBoards());
+        boardEntities = boardEntities.stream().sorted((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate())).collect(Collectors.toList());
+        List<UserBoard> boards = new ArrayList<>();
+        boards.addAll(boardEntities.stream().map(b -> new UserBoard(b.getId(), b.getName())).collect(Collectors.toList()));
+        dto.setBoards(boards);
         return dto;
     }
 

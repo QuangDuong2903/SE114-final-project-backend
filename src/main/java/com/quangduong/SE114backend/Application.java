@@ -16,7 +16,7 @@ public class Application {
 
 	@GetMapping("greeting")
 	public String greeting() {
-		return "Hello world";
+		return "Hello Khai";
 	}
 
 	@PostMapping("greeting")

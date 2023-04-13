@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.api;
 
 import com.quangduong.SE114backend.dto.board.BoardDTO;
+import com.quangduong.SE114backend.dto.board.BoardDetailsDTO;
 import com.quangduong.SE114backend.dto.board.BoardUpdateDTO;
 import com.quangduong.SE114backend.service.BoardService;
 import jakarta.validation.Valid;
@@ -16,6 +17,11 @@ public class BoardAPI {
     @Autowired
     private BoardService boardService;
 
+    @GetMapping("{id}")
+    public ResponseEntity<BoardDetailsDTO> getBoardDetails(@PathVariable("id") long id) {
+        return ResponseEntity.ok(boardService.getBoardDetails(id));
+    }
+
     @PostMapping
     public ResponseEntity<BoardDTO> createBoard(@RequestBody @Valid BoardDTO dto) {
         return new ResponseEntity<>(boardService.createBoard(dto), HttpStatus.CREATED);
@@ -24,7 +30,7 @@ public class BoardAPI {
     @PutMapping("{id}")
     public ResponseEntity<BoardDTO> updateBoard(@PathVariable("id") long id, @RequestBody BoardUpdateDTO dto) {
         dto.setId(id);
-        return new ResponseEntity<>(boardService.updateBoard(dto), HttpStatus.CREATED);
+        return ResponseEntity.ok(boardService.updateBoard(dto));
     }
 
     @DeleteMapping("{id}")

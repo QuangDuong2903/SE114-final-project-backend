@@ -1,6 +1,6 @@
 package com.quangduong.SE114backend.dto.user;
 
-public class UserBoard {
+public class UserBoardDTO {
 
     private long id;
 
@@ -22,7 +22,7 @@ public class UserBoard {
         this.name = name;
     }
 
-    public UserBoard(long id, String name) {
+    public UserBoardDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }

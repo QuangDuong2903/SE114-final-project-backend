@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.api;
 
 import com.quangduong.SE114backend.dto.user.UserDTO;
+import com.quangduong.SE114backend.dto.user.UserInfoDTO;
 import com.quangduong.SE114backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ public class UserAPI {
     }
 
 
-    record FindUsersResponse(int page, List<UserDTO> users) {
+    record FindUsersResponse(int page, List<UserInfoDTO> users) {
     }
 
 }

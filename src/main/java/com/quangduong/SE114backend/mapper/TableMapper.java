@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.mapper;
 
 import com.quangduong.SE114backend.dto.table.TableDTO;
+import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
 import com.quangduong.SE114backend.entity.TableEntity;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
@@ -20,6 +21,12 @@ public class TableMapper {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private TaskMapper taskMapper;
+
     public TableDTO toDTO(TableEntity entity) {
         TableDTO dto = new TableDTO();
         dto.setId(entity.getId());
@@ -27,6 +34,16 @@ public class TableMapper {
         dto.setBoardId(entity.getBoard().getId());
         dto.setMemberIds(entity.getMembers().stream().map(m -> m.getId()).collect(Collectors.toList()));
         dto.setTaskIds(entity.getTasks().stream().map(t -> t.getId()).collect(Collectors.toList()));
+        return dto;
+    }
+
+    public TableDetailsDTO taskDetailsDTO(TableEntity entity) {
+        TableDetailsDTO dto = new TableDetailsDTO();
+        dto.setId(entity.getId());
+        dto.setCreatedBy(entity.getCreatedBy());
+        dto.setName(entity.getName());
+        dto.setMembers(entity.getMembers().stream().map(m -> userMapper.userInfoDTO(m)).collect(Collectors.toList()));
+        dto.setTasks(entity.getTasks().stream().map(t -> taskMapper.toDetailsDTO(t)).collect(Collectors.toList()));
         return dto;
     }
 

@@ -5,6 +5,7 @@ import com.quangduong.SE114backend.dto.attribute.LabelAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.NumberAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.TextAttributeDTO;
 import com.quangduong.SE114backend.dto.task.TaskDTO;
+import com.quangduong.SE114backend.dto.task.TaskDetailsDTO;
 import com.quangduong.SE114backend.dto.task.TaskUpdateDTO;
 import com.quangduong.SE114backend.entity.*;
 import com.quangduong.SE114backend.exception.NoPermissionException;
@@ -53,6 +54,9 @@ public class TaskMapper {
 
     @Autowired
     private LabelAttributeMapper labelAttributeMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private LabelAttributeRepository labelAttributeRepository;
@@ -221,6 +225,29 @@ public class TaskMapper {
         }
 
         return entity;
+    }
+
+    public TaskDetailsDTO toDetailsDTO(TaskEntity entity) {
+        TaskDetailsDTO dto = new TaskDetailsDTO();
+        dto.setId(entity.getId());
+        dto.setUser(userMapper.userInfoDTO(entity.getUser()));
+        dto.setTextAttributes(entity.getTextAttributes().stream()
+                .map(m -> textAttributeMapper.toDTO(m))
+                .collect(Collectors.toList())
+        );
+        dto.setNumberAttributes(entity.getNumberAttributes().stream()
+                .map(m -> numberAttributeMapper.toDTO(m))
+                .collect(Collectors.toList())
+        );
+        dto.setDateAttributes(entity.getDateAttributes().stream()
+                .map(m -> dateAttributeMapper.toDTO(m))
+                .collect(Collectors.toList())
+        );
+        dto.setLabelAttributes(entity.getLabelAttributes().stream()
+                .map(m -> labelAttributeMapper.toDTO(m))
+                .collect(Collectors.toList())
+        );
+        return dto;
     }
 
     public TaskDTO toDTO(TaskEntity entity) {

@@ -24,13 +24,13 @@ public class UserDTO {
     @NotBlank(message = "Photo required")
     private String photoUrl;
 
-    private List<UserBoard> boards;
+    private List<UserBoardDTO> boards;
 
-    public List<UserBoard> getBoards() {
+    public List<UserBoardDTO> getBoards() {
         return boards;
     }
 
-    public void setBoards(List<UserBoard> boards) {
+    public void setBoards(List<UserBoardDTO> boards) {
         this.boards = boards;
     }
 

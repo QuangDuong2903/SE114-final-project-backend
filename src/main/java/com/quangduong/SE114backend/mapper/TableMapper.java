@@ -4,12 +4,14 @@ import com.quangduong.SE114backend.dto.table.TableDTO;
 import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
 import com.quangduong.SE114backend.entity.TableEntity;
+import com.quangduong.SE114backend.exception.NoPermissionException;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
 import com.quangduong.SE114backend.repository.sql.BoardRepository;
 import com.quangduong.SE114backend.repository.sql.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Component
@@ -53,7 +55,7 @@ public class TableMapper {
         entity.setBoard(boardRepository.findById(dto.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + dto.getBoardId()))
         );
-        if(dto.getMemberIds() != null)
+        if (dto.getMemberIds() != null)
             entity.setMembers(dto.getMemberIds().stream()
                     .map(i -> userRepository.findById(i)
                             .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + i)))
@@ -63,14 +65,29 @@ public class TableMapper {
     }
 
     public TableEntity toEntity(TableUpdateDTO dto, TableEntity entity) {
-        if(dto.getName() != null)
+        if (dto.getName() != null)
             entity.setName(dto.getName());
-        if(dto.getMemberIds() != null)
+        if (dto.getMemberIds() != null) {
+            if (dto.getMemberIds().size() > 0) {
+                if(entity.getBoard().getMembers().size() == 0)
+                    throw new NoPermissionException("Not allowed");
+                entity.getBoard().getMembers().forEach(m -> {
+                    AtomicBoolean isFound = new AtomicBoolean(false);
+                    dto.getMemberIds().forEach(i -> {
+                        if (i == m.getId())
+                            isFound.set(true);
+                    });
+                    if (!isFound.get())
+                        throw new NoPermissionException("Not allowed");
+                });
+            }
+
             entity.setMembers(dto.getMemberIds().stream()
                     .map(i -> userRepository.findById(i)
                             .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + i)))
                     .collect(Collectors.toList())
             );
+        }
         return entity;
     }
 

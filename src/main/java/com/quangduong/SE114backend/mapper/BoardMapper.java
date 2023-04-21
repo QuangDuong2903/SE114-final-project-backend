@@ -59,11 +59,6 @@ public class BoardMapper {
         BoardEntity entity = new BoardEntity();
         entity.setName(dto.getName());
         entity.setAdmin(securityUtils.getCurrentUser());
-        if(dto.getMembersIds() != null)
-            entity.setMembers(dto.getMembersIds().stream()
-                    .map(i -> userRepository.findById(i).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + i)))
-                    .collect(Collectors.toList())
-            );
         return entity;
     }
 

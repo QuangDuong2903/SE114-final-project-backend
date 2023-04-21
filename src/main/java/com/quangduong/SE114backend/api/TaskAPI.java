@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("task")
+@RequestMapping("tasks")
 public class TaskAPI {
 
     @Autowired

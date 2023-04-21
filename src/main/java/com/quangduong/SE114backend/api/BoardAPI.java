@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("board")
+@RequestMapping("boards")
 public class BoardAPI {
 
     @Autowired

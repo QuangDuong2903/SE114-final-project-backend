@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserAPI {
 
     @Autowired
@@ -23,7 +23,7 @@ public class UserAPI {
 
     @GetMapping
     public ResponseEntity<FindUsersResponse> findUser(@RequestParam("page") int page, @RequestParam("keyword") String keyword) {
-        Pageable pageable = PageRequest.of(page - 1, 2);
+        Pageable pageable = PageRequest.of(page - 1, 3);
         return ResponseEntity.ok(new FindUsersResponse(page, userService.findUser(keyword, pageable)));
     }
 

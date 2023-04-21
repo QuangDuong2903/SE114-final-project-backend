@@ -5,7 +5,6 @@ import com.quangduong.SE114backend.dto.user.UserDTO;
 import com.quangduong.SE114backend.dto.user.UserInfoDTO;
 import com.quangduong.SE114backend.entity.UserEntity;
 import com.quangduong.SE114backend.mapper.UserMapper;
-//import com.quangduong.SE114backend.repository.elastic.UserElasticRepository;
 import com.quangduong.SE114backend.repository.sql.UserRepository;
 import com.quangduong.SE114backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private UserElasticRepository userElasticRepository;
-
     @Autowired
     private UserMapper userMapper;
 
@@ -35,7 +31,6 @@ public class UserServiceImpl implements UserService {
         if(user != null)
             return userMapper.toDTO(user);
         user = userRepository.save(userMapper.toEntity(dto));
-//        userElasticRepository.save(userMapper.toModel(user));
         return userMapper.toDTO(user);
     }
 
@@ -44,10 +39,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmailContainingOrDisplayNameContaining(keyword, keyword, pageable)
                 .stream().map(u -> userMapper.userInfoDTO(u)).collect(Collectors.toList());
     }
-
-//    @Override
-//    public List<UserDTO> findUser(String keyword, Pageable pageable) {
-//        return userElasticRepository.findByEmailContainingOrDisplayNameContaining(keyword,keyword,pageable)
-//                .stream().map(u -> userMapper.toDTO(u)).collect(Collectors.toList());
-//    }
 }

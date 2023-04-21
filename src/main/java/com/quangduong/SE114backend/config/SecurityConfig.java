@@ -67,7 +67,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Collections.singletonList("*"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
 
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
 //        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "OPTIONS", "DELETE"));
 //        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept",
 //                "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Headers",
@@ -97,6 +97,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/greeting").permitAll()
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()

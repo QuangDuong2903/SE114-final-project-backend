@@ -1,16 +1,22 @@
 package com.quangduong.SE114backend.service.impl;
 
+import com.quangduong.SE114backend.constant.NotificationType;
 import com.quangduong.SE114backend.dto.board.BoardDTO;
 import com.quangduong.SE114backend.dto.board.BoardDetailsDTO;
 import com.quangduong.SE114backend.dto.board.BoardUpdateDTO;
 import com.quangduong.SE114backend.entity.BoardEntity;
+import com.quangduong.SE114backend.entity.NotificationEntity;
 import com.quangduong.SE114backend.exception.NoPermissionException;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
 import com.quangduong.SE114backend.mapper.BoardMapper;
+import com.quangduong.SE114backend.mapper.NotificationMapper;
 import com.quangduong.SE114backend.repository.sql.BoardRepository;
+import com.quangduong.SE114backend.repository.sql.NotificationRepository;
+import com.quangduong.SE114backend.repository.sql.UserRepository;
 import com.quangduong.SE114backend.service.BoardService;
 import com.quangduong.SE114backend.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
     private BoardMapper boardMapper;
 
     @Autowired
+    private NotificationMapper notificationMapper;
+
+    @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private SecurityUtils securityUtils;
@@ -38,7 +56,22 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public BoardDTO createBoard(BoardDTO dto) {
-        return boardMapper.toDTO(boardRepository.save(boardMapper.toEntity(dto)));
+        if (dto.getMembersIds() != null)
+            dto.getMembersIds().forEach(i -> userRepository.findById(i)
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + i)));
+        BoardEntity entity = boardRepository.save(boardMapper.toEntity(dto));
+        if (dto.getMembersIds() != null)
+            dto.getMembersIds().forEach(i -> {
+                NotificationEntity notificationEntity = new NotificationEntity();
+                notificationEntity.setAccept(false);
+                notificationEntity.setMessage("You has been invited to " + entity.getName());
+                notificationEntity.setRead(false);
+                notificationEntity.setUser(userRepository.findById(i).get());
+                notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
+                notificationEntity.setType(NotificationType.INVITATION);
+                messagingTemplate.convertAndSend("/notification/" + i, notificationMapper.toDTO(notificationRepository.save(notificationEntity)));
+            });
+        return boardMapper.toDTO(entity);
     }
 
     @Override

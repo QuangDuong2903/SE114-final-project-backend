@@ -13,11 +13,13 @@ import com.quangduong.SE114backend.repository.sql.UserRepository;
 import com.quangduong.SE114backend.service.NotificationService;
 import com.quangduong.SE114backend.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
@@ -63,15 +65,28 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Not found notification with id: " + id));
         if (entity.getType() != NotificationType.INVITATION)
             throw new NoPermissionException("Not allowed");
+        if (entity.isAccept() || entity.isReject())
+            throw new NoPermissionException("Not allowed");
         BoardEntity boardEntity = boardRepository.findById(entity.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + entity.getBoardId()));
-        if (boardEntity.getMembers().stream().filter(u -> u.getId() == securityUtils.getCurrentUserId()).findAny().isPresent())
-            throw new RuntimeException("User already in board");
-        if (!entity.isAccept()) {
-            boardEntity.getMembers().add(securityUtils.getCurrentUser());
-            boardRepository.save(boardEntity);
-            entity.setAccept(true);
-        }
+        if (boardEntity.getAdmin().getId() == securityUtils.getCurrentUserId() || boardEntity.getMembers().stream().anyMatch(u -> u.getId() == securityUtils.getCurrentUserId()))
+            throw new NoPermissionException("User already in board");
+        boardEntity.getMembers().add(securityUtils.getCurrentUser());
+        boardRepository.save(boardEntity);
+        entity.setAccept(true);
+        return notificationMapper.toDTO(notificationRepository.save(entity));
+    }
+
+    @Override
+    @Transactional
+    public NotificationDTO rejectInvitation(long id) {
+        NotificationEntity entity = notificationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found notification with id: " + id));
+        if (entity.getType() != NotificationType.INVITATION)
+            throw new NoPermissionException("Not allowed");
+        if (entity.isAccept() || entity.isReject())
+            throw new NoPermissionException("Not allowed");
+        entity.setReject(true);
         return notificationMapper.toDTO(notificationRepository.save(entity));
     }
 }

@@ -19,6 +19,9 @@ public class NotificationEntity extends BaseEntity {
     @Column(name = "is_accept")
     private boolean isAccept;
 
+    @Column(name = "is_reject")
+    private boolean isReject;
+
     @Column(name = "type")
     private NotificationType type;
 
@@ -83,5 +86,26 @@ public class NotificationEntity extends BaseEntity {
 
     public void setBoardId(long boardId) {
         this.boardId = boardId;
+    }
+
+    public boolean isReject() {
+        return isReject;
+    }
+
+    public void setReject(boolean reject) {
+        isReject = reject;
+    }
+
+    public NotificationEntity() {}
+
+    public NotificationEntity(String thumbnail, String message, boolean isRead, boolean isAccept, boolean isReject, NotificationType type, long boardId, UserEntity user) {
+        this.thumbnail = thumbnail;
+        this.message = message;
+        this.isRead = isRead;
+        this.isAccept = isAccept;
+        this.isReject = isReject;
+        this.type = type;
+        this.boardId = boardId;
+        this.user = user;
     }
 }

@@ -12,6 +12,8 @@ public class NotificationDTO {
     private NotificationType type;
     private boolean isAccept;
 
+    private boolean isReject;
+
     public long getId() {
         return id;
     }
@@ -66,5 +68,13 @@ public class NotificationDTO {
 
     public void setAccept(boolean accept) {
         isAccept = accept;
+    }
+
+    public boolean isReject() {
+        return isReject;
+    }
+
+    public void setReject(boolean reject) {
+        isReject = reject;
     }
 }

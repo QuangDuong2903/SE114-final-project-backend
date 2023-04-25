@@ -66,6 +66,7 @@ public class BoardServiceImpl implements BoardService {
                 notificationEntity.setAccept(false);
                 notificationEntity.setMessage("You has been invited to " + entity.getName());
                 notificationEntity.setRead(false);
+                notificationEntity.setReject(false);
                 notificationEntity.setUser(userRepository.findById(i).get());
                 notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
                 notificationEntity.setType(NotificationType.INVITATION);

@@ -11,6 +11,7 @@ public class NotificationMapper {
         NotificationDTO dto = new NotificationDTO();
         dto.setId(entity.getId());
         dto.setAccept(entity.isAccept());
+        dto.setReject(entity.isReject());
         dto.setMessage(entity.getMessage());
         dto.setRead(entity.isRead());
         dto.setThumbnail(entity.getThumbnail());

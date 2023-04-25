@@ -29,4 +29,9 @@ public class NotificationAPI {
         return ResponseEntity.ok(notificationService.acceptInvitation(id));
     }
 
+    @PutMapping("invitations/{id}/reject")
+    public ResponseEntity<NotificationDTO> rejectInvitation(@PathVariable("id") long id) {
+        return ResponseEntity.ok(notificationService.rejectInvitation(id));
+    }
+
 }

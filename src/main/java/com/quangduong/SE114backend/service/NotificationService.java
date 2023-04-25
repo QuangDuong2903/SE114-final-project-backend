@@ -11,5 +11,6 @@ public interface NotificationService {
 
     List<NotificationDTO> setRead(List<Long> ids);
     NotificationDTO acceptInvitation(long id);
+    NotificationDTO rejectInvitation(long id);
 
 }

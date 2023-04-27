@@ -29,7 +29,7 @@ public class BoardAPI {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<BoardDTO> updateBoard(@PathVariable("id") long id, @RequestBody BoardUpdateDTO dto) {
+    public ResponseEntity<BoardDetailsDTO> updateBoard(@PathVariable("id") long id, @RequestBody BoardUpdateDTO dto) {
         dto.setId(id);
         return ResponseEntity.ok(boardService.updateBoard(dto));
     }

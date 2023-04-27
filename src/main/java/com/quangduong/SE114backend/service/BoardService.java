@@ -8,7 +8,7 @@ public interface BoardService {
 
     BoardDetailsDTO getBoardDetails(long id);
     BoardDTO createBoard(BoardDTO dto);
-    BoardDTO updateBoard(BoardUpdateDTO dto);
+    BoardDetailsDTO updateBoard(BoardUpdateDTO dto);
     void deleteBoardById(long id);
 
 }

@@ -5,6 +5,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.Date;
+
 @Controller
 public class ChatController {
 
@@ -14,7 +16,6 @@ public class ChatController {
         return message;
     }
 
-    record Message(String message, String email, String avatar) {
-    }
+    record Message(String email, String displayName, String photoUrl, String message, Date timestamp) { }
 
 }

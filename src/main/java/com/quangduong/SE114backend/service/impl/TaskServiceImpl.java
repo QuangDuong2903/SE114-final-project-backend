@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.service.impl;
 
 import com.quangduong.SE114backend.dto.task.TaskDTO;
+import com.quangduong.SE114backend.dto.task.TaskDetailsDTO;
 import com.quangduong.SE114backend.dto.task.TaskUpdateDTO;
 import com.quangduong.SE114backend.entity.TaskEntity;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
@@ -37,18 +38,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskDTO createTask(TaskDTO dto) {
+    public TaskDetailsDTO createTask(TaskDTO dto) {
         TaskEntity entity = taskRepository.save(taskMapper.toEntity(dto));
         entity.getTextAttributes().forEach(m -> m.setTask(entity));
         entity.getNumberAttributes().forEach(m -> m.setTask(entity));
         entity.getDateAttributes().forEach(m -> m.setTask(entity));
         entity.getLabelAttributes().forEach(m -> m.setTask(entity));
-        return taskMapper.toDTO(entity);
+        return taskMapper.toDetailsDTO(entity);
     }
 
     @Override
     @Transactional
-    public TaskDTO updateTask(TaskUpdateDTO dto) {
+    public TaskDetailsDTO updateTask(TaskUpdateDTO dto) {
         TaskEntity entity = taskRepository.findById(dto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found task with id: " + dto.getId()));
         List<Long> textAttributeIds = entity.getTextAttributes().stream().map(t -> t.getId()).collect(Collectors.toList());
@@ -74,7 +75,7 @@ public class TaskServiceImpl implements TaskService {
                 labelAttributeRepository.deleteById(i);
         });
         taskRepository.save(entity);
-        return taskMapper.toDTO(taskRepository.findById(dto.getId()).get());
+        return taskMapper.toDetailsDTO(taskRepository.findById(dto.getId()).get());
     }
 
     @Override

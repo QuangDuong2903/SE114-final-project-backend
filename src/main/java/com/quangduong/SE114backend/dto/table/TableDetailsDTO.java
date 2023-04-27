@@ -9,7 +9,7 @@ public class TableDetailsDTO {
 
     private long id;
 
-    private String createdBy;
+    private UserInfoDTO createdBy;
 
     private String name;
 
@@ -25,11 +25,11 @@ public class TableDetailsDTO {
         this.id = id;
     }
 
-    public String getCreatedBy() {
+    public UserInfoDTO getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(UserInfoDTO createdBy) {
         this.createdBy = createdBy;
     }
 

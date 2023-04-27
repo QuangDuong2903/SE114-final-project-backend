@@ -28,10 +28,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(UserDTO dto) {
         UserEntity user = userRepository.findOneByEmailAndStatus(dto.getEmail(), UserStatus.ACTIVE);
-        if(user != null)
+        if(user != null) {
+            if (!dto.getPhotoUrl().equals("null")) {
+                user.setPhotoUrl(dto.getPhotoUrl());
+                return userMapper.toDTO(userRepository.save(user));
+            }
             return userMapper.toDTO(user);
-        user = userRepository.save(userMapper.toEntity(dto));
-        return userMapper.toDTO(user);
+        }
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
     }
 
     @Override

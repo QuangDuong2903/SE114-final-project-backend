@@ -36,6 +36,7 @@ public class UserMapper {
         dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
         dto.setPhotoUrl(entity.getPhotoUrl());
+        dto.setDisplayName(entity.getDisplayName());
         return dto;
     }
 

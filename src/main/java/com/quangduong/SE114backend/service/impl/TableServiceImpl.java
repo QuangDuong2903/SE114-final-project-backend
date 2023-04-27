@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.service.impl;
 
 import com.quangduong.SE114backend.dto.table.TableDTO;
+import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
 import com.quangduong.SE114backend.entity.TableEntity;
 import com.quangduong.SE114backend.exception.NoPermissionException;
@@ -27,19 +28,19 @@ public class TableServiceImpl implements TableService {
 
     @Override
     @Transactional
-    public TableDTO createTable(TableDTO dto) {
-        return tableMapper.toDTO(tableRepository.save(tableMapper.toEntity(dto)));
+    public TableDetailsDTO createTable(TableDTO dto) {
+        return tableMapper.toDetailsDTO(tableRepository.save(tableMapper.toEntity(dto)));
     }
 
     @Override
     @Transactional
-    public TableDTO updateTable(TableUpdateDTO dto) {
+    public TableDetailsDTO updateTable(TableUpdateDTO dto) {
         long id = dto.getId();
         TableEntity entity = tableRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found table with id: " + id));
         if (!entity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail()))
             throw new NoPermissionException("Update table with id: " + id + " not allowed");
-        return tableMapper.toDTO(tableRepository.save(tableMapper.toEntity(dto, entity)));
+        return tableMapper.toDetailsDTO(tableRepository.save(tableMapper.toEntity(dto, entity)));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.api;
 
 import com.quangduong.SE114backend.dto.table.TableDTO;
+import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
 import com.quangduong.SE114backend.mapper.TableMapper;
 import com.quangduong.SE114backend.service.TableService;
@@ -21,12 +22,12 @@ public class TableAPI {
     private TableMapper tableMapper;
 
     @PostMapping
-    public ResponseEntity<TableDTO> createTable(@RequestBody @Valid TableDTO dto) {
+    public ResponseEntity<TableDetailsDTO> createTable(@RequestBody @Valid TableDTO dto) {
         return new ResponseEntity<>(tableService.createTable(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<TableDTO> updateTable(@PathVariable("id") long id, @RequestBody TableUpdateDTO dto) {
+    public ResponseEntity<TableDetailsDTO> updateTable(@PathVariable("id") long id, @RequestBody TableUpdateDTO dto) {
         dto.setId(id);
         return ResponseEntity.ok(tableService.updateTable(dto));
     }

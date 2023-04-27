@@ -6,6 +6,8 @@ public class UserInfoDTO {
 
     private String email;
 
+    private String displayName;
+
     private String photoUrl;
 
     public long getId() {
@@ -30,5 +32,13 @@ public class UserInfoDTO {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

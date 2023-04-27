@@ -1,5 +1,6 @@
 package com.quangduong.SE114backend.mapper;
 
+import com.quangduong.SE114backend.constant.UserStatus;
 import com.quangduong.SE114backend.dto.table.TableDTO;
 import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
@@ -39,10 +40,10 @@ public class TableMapper {
         return dto;
     }
 
-    public TableDetailsDTO taskDetailsDTO(TableEntity entity) {
+    public TableDetailsDTO toDetailsDTO(TableEntity entity) {
         TableDetailsDTO dto = new TableDetailsDTO();
         dto.setId(entity.getId());
-        dto.setCreatedBy(entity.getCreatedBy());
+        dto.setCreatedBy(userMapper.userInfoDTO(userRepository.findOneByEmailAndStatus(entity.getCreatedBy(), UserStatus.ACTIVE)));
         dto.setName(entity.getName());
         dto.setMembers(entity.getMembers().stream().map(m -> userMapper.userInfoDTO(m)).collect(Collectors.toList()));
         dto.setTasks(entity.getTasks().stream().map(t -> taskMapper.toDetailsDTO(t)).collect(Collectors.toList()));

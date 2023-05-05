@@ -48,7 +48,8 @@ public class BoardServiceImpl implements BoardService {
     public BoardDetailsDTO getBoardDetails(long id) {
         BoardEntity entity = boardRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id));
-        if (entity.getAdmin().getId() != securityUtils.getCurrentUserId() && entity.getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId()))
+        if (entity.getAdmin().getId() != securityUtils.getCurrentUserId()
+                && entity.getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId()))
             throw new NoPermissionException("Not allowed");
         return boardMapper.toDetailsDTO(entity);
     }
@@ -79,9 +80,27 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public BoardDetailsDTO updateBoard(BoardUpdateDTO dto) {
         long id = dto.getId();
+        BoardEntity entity = boardRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id));
         if (securityUtils.getCurrentUserId() != boardRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id)).getAdmin().getId())
             throw new NoPermissionException("Update board with id: " + id + " not allowed");
+        if (dto.getMembersIds() != null)
+            dto.getMembersIds().forEach(i -> {
+                NotificationEntity notificationEntity =
+                        notificationRepository.findOneByTypeAndBoardIdAndUserAndIsAcceptAndIsReject(NotificationType.INVITATION, entity.getId(), userRepository.findById(i).get(), false, false);
+                if (notificationEntity == null) {
+                    notificationEntity = new NotificationEntity();
+                    notificationEntity.setAccept(false);
+                    notificationEntity.setMessage("You has been invited to " + entity.getName());
+                    notificationEntity.setRead(false);
+                    notificationEntity.setReject(false);
+                    notificationEntity.setUser(userRepository.findById(i).get());
+                    notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
+                    notificationEntity.setType(NotificationType.INVITATION);
+                    messagingTemplate.convertAndSend("/notification/" + i, notificationMapper.toDTO(notificationRepository.save(notificationEntity)));
+                }
+            });
         return boardMapper.toDetailsDTO(
                 boardRepository.save(boardMapper.toEntity(dto, boardRepository.findById(dto.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + dto.getId()))

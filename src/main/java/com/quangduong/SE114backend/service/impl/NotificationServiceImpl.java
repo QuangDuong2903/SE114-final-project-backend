@@ -69,7 +69,8 @@ public class NotificationServiceImpl implements NotificationService {
             throw new NoPermissionException("Not allowed");
         BoardEntity boardEntity = boardRepository.findById(entity.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + entity.getBoardId()));
-        if (boardEntity.getAdmin().getId() == securityUtils.getCurrentUserId() || boardEntity.getMembers().stream().anyMatch(u -> u.getId() == securityUtils.getCurrentUserId()))
+        if (boardEntity.getAdmin().getId() == securityUtils.getCurrentUserId()
+                || boardEntity.getMembers().stream().anyMatch(u -> u.getId() == securityUtils.getCurrentUserId()))
             throw new NoPermissionException("User already in board");
         boardEntity.getMembers().add(securityUtils.getCurrentUser());
         boardRepository.save(boardEntity);

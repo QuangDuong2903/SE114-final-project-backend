@@ -3,10 +3,12 @@ package com.quangduong.SE114backend.service.impl;
 import com.quangduong.SE114backend.dto.table.TableDTO;
 import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.table.TableUpdateDTO;
+import com.quangduong.SE114backend.entity.BoardEntity;
 import com.quangduong.SE114backend.entity.TableEntity;
 import com.quangduong.SE114backend.exception.NoPermissionException;
 import com.quangduong.SE114backend.exception.ResourceNotFoundException;
 import com.quangduong.SE114backend.mapper.TableMapper;
+import com.quangduong.SE114backend.repository.sql.BoardRepository;
 import com.quangduong.SE114backend.repository.sql.TableRepository;
 import com.quangduong.SE114backend.service.TableService;
 import com.quangduong.SE114backend.utils.SecurityUtils;
@@ -21,6 +23,9 @@ public class TableServiceImpl implements TableService {
     private TableRepository tableRepository;
 
     @Autowired
+    private BoardRepository boardRepository;
+
+    @Autowired
     private TableMapper tableMapper;
 
     @Autowired
@@ -29,6 +34,11 @@ public class TableServiceImpl implements TableService {
     @Override
     @Transactional
     public TableDetailsDTO createTable(TableDTO dto) {
+        BoardEntity boardEntity = boardRepository.findById(dto.getBoardId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + dto.getBoardId()));
+        if (boardEntity.getAdmin().getId() != securityUtils.getCurrentUserId()
+                && boardEntity.getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId())
+        ) throw new NoPermissionException("Not allowed");
         return tableMapper.toDetailsDTO(tableRepository.save(tableMapper.toEntity(dto)));
     }
 

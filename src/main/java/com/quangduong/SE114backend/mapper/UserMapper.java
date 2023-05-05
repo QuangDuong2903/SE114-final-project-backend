@@ -28,6 +28,7 @@ public class UserMapper {
         boardEntities.addAll(entity.getBoards());
         boardEntities = boardEntities.stream().sorted((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate())).collect(Collectors.toList());
         dto.setBoards(boardEntities.stream().map(b -> new UserBoardDTO(b.getId(), b.getName())).collect(Collectors.toList()));
+        dto.setHasNonReadNotification(entity.getNotifications().stream().anyMatch(n -> !n.isRead()));
         return dto;
     }
 

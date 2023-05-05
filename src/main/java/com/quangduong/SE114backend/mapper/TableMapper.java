@@ -69,19 +69,12 @@ public class TableMapper {
         if (dto.getName() != null)
             entity.setName(dto.getName());
         if (dto.getMemberIds() != null) {
-            if (dto.getMemberIds().size() > 0) {
-                if(entity.getBoard().getMembers().size() == 0)
-                    throw new NoPermissionException("Not allowed");
-                entity.getBoard().getMembers().forEach(m -> {
-                    AtomicBoolean isFound = new AtomicBoolean(false);
-                    dto.getMemberIds().forEach(i -> {
-                        if (i == m.getId())
-                            isFound.set(true);
-                    });
-                    if (!isFound.get())
-                        throw new NoPermissionException("Not allowed");
+            if (dto.getMemberIds().size() > 0)
+                dto.getMemberIds().forEach(i -> {
+                    if (entity.getBoard().getMembers().stream().noneMatch(m -> m.getId() == i)
+                            && i != entity.getBoard().getAdmin().getId()
+                    ) throw new NoPermissionException("Not allowed");
                 });
-            }
 
             entity.setMembers(dto.getMemberIds().stream()
                     .map(i -> userRepository.findById(i)

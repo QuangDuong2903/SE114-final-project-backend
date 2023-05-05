@@ -26,6 +26,16 @@ public class UserDTO {
 
     private List<UserBoardDTO> boards;
 
+    private boolean hasNonReadNotification;
+
+    public boolean isHasNonReadNotification() {
+        return hasNonReadNotification;
+    }
+
+    public void setHasNonReadNotification(boolean hasNonReadNotification) {
+        this.hasNonReadNotification = hasNonReadNotification;
+    }
+
     public List<UserBoardDTO> getBoards() {
         return boards;
     }

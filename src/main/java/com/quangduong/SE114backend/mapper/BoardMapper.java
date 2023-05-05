@@ -46,10 +46,10 @@ public class BoardMapper {
         dto.setMembers(entity.getMembers().stream().map(m -> userMapper.userInfoDTO(m)).collect(Collectors.toList()));
         dto.setTables(entity.getTables().stream()
                         .filter(t -> securityUtils.getCurrentUserId() == entity.getAdmin().getId()
-                                || t.getCreatedBy() == securityUtils.getCurrentUser().getEmail()
+                                || t.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail())
                                 || t.getMembers().stream().anyMatch(m -> m.getId() == securityUtils.getCurrentUserId())
                         )
-                        .map(t -> tableMapper.taskDetailsDTO(t))
+                        .map(t -> tableMapper.toDetailsDTO(t))
                         .collect(Collectors.toList())
         );
         return dto;
@@ -65,11 +65,13 @@ public class BoardMapper {
     public BoardEntity toEntity(BoardUpdateDTO dto, BoardEntity entity) {
         if (dto.getName() != null)
             entity.setName(dto.getName());
-        if (dto.getMembersIds() != null)
-            entity.setMembers(dto.getMembersIds().stream()
-                    .map(i -> userRepository.findById(i).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + i)))
-                    .collect(Collectors.toList())
-            );
+//        if (dto.getMembersIds() != null)
+//            entity.setMembers(dto.getMembersIds().stream()
+//                    .map(i -> userRepository.findById(i)
+//                            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + i))
+//                    )
+//                    .collect(Collectors.toList())
+//            );
         return entity;
     }
 }

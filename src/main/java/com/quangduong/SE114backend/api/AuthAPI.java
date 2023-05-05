@@ -32,10 +32,11 @@ public class AuthAPI {
                 user.getDisplayName(),
                 user.getPhotoUrl(),
                 jwtUtils.generateToken(user.getEmail()),
-                user.getBoards())
+                user.getBoards(),
+                user.isHasNonReadNotification())
         );
     }
 
-    record LoginResponse(long id, String email, String displayName, String photoUrl, String token, List<UserBoardDTO> boards) {}
+    record LoginResponse(long id, String email, String displayName, String photoUrl, String token, List<UserBoardDTO> boards, boolean hasNonReadNotification) {}
 
 }

@@ -16,6 +16,6 @@ public class ChatController {
         return message;
     }
 
-    record Message(String email, String displayName, String photoUrl, String message, Date timestamp) { }
+    record Message(String boardName, String email, String displayName, String photoUrl, String message, Date timestamp) { }
 
 }

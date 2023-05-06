@@ -65,13 +65,6 @@ public class BoardMapper {
     public BoardEntity toEntity(BoardUpdateDTO dto, BoardEntity entity) {
         if (dto.getName() != null)
             entity.setName(dto.getName());
-//        if (dto.getMembersIds() != null)
-//            entity.setMembers(dto.getMembersIds().stream()
-//                    .map(i -> userRepository.findById(i)
-//                            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + i))
-//                    )
-//                    .collect(Collectors.toList())
-//            );
         return entity;
     }
 }

@@ -1,5 +1,6 @@
 package com.quangduong.SE114backend.entity;
 
+import com.quangduong.SE114backend.constant.TaskStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ public class TaskEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @Column(name = "status")
+    private TaskStatus status;
 
     @ManyToOne
     @JoinColumn(name = "table_id")
@@ -43,6 +47,14 @@ public class TaskEntity extends BaseEntity {
 
     public void setTable(TableEntity table) {
         this.table = table;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     public List<TextAttributeEntity> getTextAttributes() {

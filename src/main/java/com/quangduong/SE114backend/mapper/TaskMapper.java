@@ -77,6 +77,7 @@ public class TaskMapper {
                 orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId()))
         );
         entity.setTable(tableEntity);
+        entity.setStatus(dto.getStatus());
         if (dto.getTextAttributes() != null)
             entity.setTextAttributes(dto.getTextAttributes().stream()
                     .map(m -> textAttributeRepository.save(textAttributeMapper.toEntity(m)))
@@ -106,12 +107,14 @@ public class TaskMapper {
                 && entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId()))
             throw new NoPermissionException("Not allowed");
         if (dto.getUserId() != null)
-            if (!entity.getTable().getMembers().stream().anyMatch(m -> m.getId() == dto.getUserId()))
+            if (entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId())
+                    && !entity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail()))
                 throw new NoPermissionException("Not allowed");
             else
                 entity.setUser(userRepository.findById(dto.getUserId())
                         .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId())));
-
+        if (dto.getStatus() != null)
+            entity.setStatus(dto.getStatus());
         if (dto.getTextAttributes() != null) {
             List<Long> ids = new ArrayList<>();
             for (TextAttributeEntity textAttributeEntity : entity.getTextAttributes()) {
@@ -231,6 +234,7 @@ public class TaskMapper {
         TaskDetailsDTO dto = new TaskDetailsDTO();
         dto.setId(entity.getId());
         dto.setUser(userMapper.userInfoDTO(entity.getUser()));
+        dto.setStatus(entity.getStatus());
         dto.setTextAttributes(entity.getTextAttributes().stream()
                 .map(m -> textAttributeMapper.toDTO(m))
                 .collect(Collectors.toList())
@@ -255,6 +259,7 @@ public class TaskMapper {
         dto.setId(entity.getId());
         dto.setTableId(entity.getTable().getId());
         dto.setUserId(entity.getUser().getId());
+        dto.setStatus(entity.getStatus());
         dto.setTextAttributes(entity.getTextAttributes().stream()
                 .map(m -> textAttributeMapper.toDTO(m))
                 .collect(Collectors.toList())

@@ -3,11 +3,15 @@ package com.quangduong.SE114backend.dto.user;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Date;
 import java.util.List;
 
 public class UserDTO {
 
     private long id;
+
+    private boolean isNew;
+
     @NotBlank(message = "Email required")
     @Email(message = "Email not valid")
     private String email;
@@ -34,6 +38,14 @@ public class UserDTO {
 
     public void setHasNonReadNotification(boolean hasNonReadNotification) {
         this.hasNonReadNotification = hasNonReadNotification;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 
     public List<UserBoardDTO> getBoards() {

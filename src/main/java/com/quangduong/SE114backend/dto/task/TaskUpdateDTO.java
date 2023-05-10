@@ -1,5 +1,6 @@
 package com.quangduong.SE114backend.dto.task;
 
+import com.quangduong.SE114backend.constant.TaskStatus;
 import com.quangduong.SE114backend.dto.attribute.DateAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.LabelAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.NumberAttributeDTO;
@@ -11,6 +12,8 @@ import java.util.List;
 public class TaskUpdateDTO {
 
     private long id;
+
+    private TaskStatus status;
 
     private Long userId;
 
@@ -36,6 +39,14 @@ public class TaskUpdateDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     public List<TextAttributeDTO> getTextAttributes() {

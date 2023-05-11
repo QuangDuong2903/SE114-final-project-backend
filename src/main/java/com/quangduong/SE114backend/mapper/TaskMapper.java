@@ -109,7 +109,7 @@ public class TaskMapper {
         if (dto.getUserId() != null)
             if (entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId())
                     && !entity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail()))
-                throw new NoPermissionException("Not allowed");
+                throw new NoPermissionException("User not allowed");
             else
                 entity.setUser(userRepository.findById(dto.getUserId())
                         .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId())));

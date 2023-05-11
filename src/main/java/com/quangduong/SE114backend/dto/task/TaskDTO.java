@@ -5,6 +5,7 @@ import com.quangduong.SE114backend.dto.attribute.DateAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.LabelAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.NumberAttributeDTO;
 import com.quangduong.SE114backend.dto.attribute.TextAttributeDTO;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;

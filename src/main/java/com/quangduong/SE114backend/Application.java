@@ -14,12 +14,7 @@ public class Application {
 
 	@GetMapping("greeting")
 	public String greeting() {
-		return "Hello Khai";
-	}
-
-	@PostMapping("greeting")
-	public String postTest(@RequestBody String name) {
-		return name;
+		return "Hello world";
 	}
 
 	public static void main(String[] args) {

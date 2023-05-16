@@ -1,24 +1,5 @@
 version: '3'
 services:
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
-#    container_name: elasticsearch
-#    environment:
-#      - discovery.type=single-node
-#      - cluster.name=docker-cluster
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#    ports:
-#      - 9200:9200
-#      - 9300:9300
-#    volumes:
-#      - esdata:/usr/share/elasticsearch/data
-#    networks:
-#      - es_network
 
   mysql:
     image: mysql:8.0
@@ -43,7 +24,6 @@ services:
     ports:
       - 8081:8081
     depends_on:
-#      - elasticsearch
       - mysql
     environment:
       DB_HOST: mysql
@@ -51,14 +31,10 @@ services:
       DB_DATABASE: workmanagement
       DB_USER: quangduong
       DB_PASSWORD: 292003
-#      ES_HOST: host.docker.internal
-#      ES_PORT: 9300
-#      ES_CLUSTERNAME: docker-cluster
     networks:
       - es_network
 
 volumes:
-#  esdata:
   mysql_data:
 
 networks:

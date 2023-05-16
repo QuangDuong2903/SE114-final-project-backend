@@ -6,6 +6,8 @@ import com.quangduong.SE114backend.entity.DateAttributeEntity;
 import com.quangduong.SE114backend.entity.TextAttributeEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+
 @Component
 public class DateAttributeMapper {
 
@@ -26,6 +28,10 @@ public class DateAttributeMapper {
         DateAttributeDTO dto = new DateAttributeDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(entity.getValue());
+//        calendar.add(Calendar.HOUR_OF_DAY, - 7);
+//        dto.setValue(calendar.getTime());
         dto.setValue(entity.getValue());
         return dto;
     }

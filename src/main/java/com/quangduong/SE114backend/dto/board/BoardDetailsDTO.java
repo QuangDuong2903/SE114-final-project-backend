@@ -1,5 +1,6 @@
 package com.quangduong.SE114backend.dto.board;
 
+import com.quangduong.SE114backend.dto.label.LabelDTO;
 import com.quangduong.SE114backend.dto.table.TableDetailsDTO;
 import com.quangduong.SE114backend.dto.user.UserInfoDTO;
 
@@ -16,6 +17,8 @@ public class BoardDetailsDTO {
     private List<UserInfoDTO> members;
 
     private List<TableDetailsDTO> tables;
+
+    private List<LabelDTO> labels;
 
     public long getId() {
         return id;
@@ -55,5 +58,13 @@ public class BoardDetailsDTO {
 
     public void setTables(List<TableDetailsDTO> tables) {
         this.tables = tables;
+    }
+
+    public List<LabelDTO> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<LabelDTO> labels) {
+        this.labels = labels;
     }
 }

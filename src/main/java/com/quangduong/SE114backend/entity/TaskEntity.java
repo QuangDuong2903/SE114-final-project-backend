@@ -10,6 +10,10 @@ import java.util.List;
 @Table(name = "task")
 public class TaskEntity extends BaseEntity {
 
+    @Lob
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -32,6 +36,14 @@ public class TaskEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<LabelAttributeEntity> labelAttributes = new ArrayList<>();
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public UserEntity getUser() {
         return user;

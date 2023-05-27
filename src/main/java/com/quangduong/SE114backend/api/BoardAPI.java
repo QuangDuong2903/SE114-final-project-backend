@@ -43,7 +43,7 @@ public class BoardAPI {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable("id") long id) {
         boardService.deleteBoardById(id);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().build();
     }
 
     record CreateBoardResponse(Long id, String name) {}

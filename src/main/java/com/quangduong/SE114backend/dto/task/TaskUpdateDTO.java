@@ -13,6 +13,8 @@ public class TaskUpdateDTO {
 
     private long id;
 
+    private String description;
+
     private TaskStatus status;
 
     private Long userId;
@@ -31,6 +33,14 @@ public class TaskUpdateDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getUserId() {

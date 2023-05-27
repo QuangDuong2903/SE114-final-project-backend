@@ -14,11 +14,11 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        logger.info("User connected");
+//        logger.info("User connected");
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        logger.info("User disconnect");
+//        logger.info("User disconnect");
     }
 }

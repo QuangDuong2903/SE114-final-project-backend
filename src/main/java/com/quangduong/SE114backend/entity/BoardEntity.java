@@ -3,6 +3,7 @@ package com.quangduong.SE114backend.entity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,9 @@ public class BoardEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<TableEntity> tables = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<LabelEntity> labels = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -53,5 +57,13 @@ public class BoardEntity extends BaseEntity {
 
     public void setTables(List<TableEntity> tables) {
         this.tables = tables;
+    }
+
+    public List<LabelEntity> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<LabelEntity> labels) {
+        this.labels = labels;
     }
 }

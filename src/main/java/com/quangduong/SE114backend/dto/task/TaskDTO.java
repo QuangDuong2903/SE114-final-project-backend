@@ -12,6 +12,10 @@ import java.util.List;
 
 public class TaskDTO {
     private long id;
+
+    @NotBlank(message = "Task description is required")
+    private String description;
+
     @NotNull(message = "User id is required")
     private Long userId;
 
@@ -28,6 +32,14 @@ public class TaskDTO {
     private List<DateAttributeDTO> dateAttributes;
 
     private List<LabelAttributeDTO> labelAttributes;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<LabelAttributeDTO> getLabelAttributes() {
         return labelAttributes;

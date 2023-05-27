@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,6 +132,7 @@ public class BoardServiceImpl implements BoardService {
                 notificationEntity.setReject(false);
                 notificationEntity.setUser(userRepository.findById(i).get());
                 notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
+                notificationEntity.setBoardId(entity.getId());
                 notificationEntity.setType(NotificationType.INVITATION);
                 messagingTemplate.convertAndSend("/notification/" + i, notificationMapper.toDTO(notificationRepository.save(notificationEntity)));
             });
@@ -149,7 +149,8 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id)).getAdmin().getId())
             throw new NoPermissionException("Update board with id: " + id + " not allowed");
         if (dto.getMembersIds() != null) {
-            if (dto.getMembersIds().stream().allMatch(i -> entity.getMembers().stream().anyMatch(m -> m.getId() == i))) {
+            if (dto.getMembersIds().size() == 0) entity.setMembers(new ArrayList<>());
+            else if (dto.getMembersIds().stream().allMatch(i -> entity.getMembers().stream().anyMatch(m -> m.getId() == i))) {
                 entity.setMembers(
                         dto.getMembersIds().stream()
                                 .map(i -> userRepository.findById(i)
@@ -158,19 +159,21 @@ public class BoardServiceImpl implements BoardService {
                 boardRepository.save(entity);
             } else {
                 dto.getMembersIds().forEach(i -> {
-                    NotificationEntity notificationEntity =
-                            notificationRepository.findOneByTypeAndBoardIdAndUserAndIsAcceptAndIsReject(NotificationType.INVITATION, entity.getId(), userRepository.findById(i).get(), false, false);
-                    if (notificationEntity == null) {
-                        notificationEntity = new NotificationEntity();
-                        notificationEntity.setAccept(false);
-                        notificationEntity.setMessage("You has been invited to " + entity.getName());
-                        notificationEntity.setRead(false);
-                        notificationEntity.setReject(false);
-                        notificationEntity.setBoardId(entity.getId());
-                        notificationEntity.setUser(userRepository.findById(i).get());
-                        notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
-                        notificationEntity.setType(NotificationType.INVITATION);
-                        messagingTemplate.convertAndSend("/notification/" + i, notificationMapper.toDTO(notificationRepository.save(notificationEntity)));
+                    if (entity.getMembers().stream().noneMatch(m -> m.getId() == i)) {
+                        NotificationEntity notificationEntity =
+                                notificationRepository.findOneByTypeAndBoardIdAndUserAndIsAcceptAndIsReject(NotificationType.INVITATION, entity.getId(), userRepository.findById(i).get(), false, false);
+                        if (notificationEntity == null) {
+                            notificationEntity = new NotificationEntity();
+                            notificationEntity.setAccept(false);
+                            notificationEntity.setMessage("You has been invited to " + entity.getName());
+                            notificationEntity.setRead(false);
+                            notificationEntity.setReject(false);
+                            notificationEntity.setBoardId(entity.getId());
+                            notificationEntity.setUser(userRepository.findById(i).get());
+                            notificationEntity.setThumbnail(securityUtils.getCurrentUser().getPhotoUrl());
+                            notificationEntity.setType(NotificationType.INVITATION);
+                            messagingTemplate.convertAndSend("/notification/" + i, notificationMapper.toDTO(notificationRepository.save(notificationEntity)));
+                        }
                     }
                 });
             }
@@ -186,7 +189,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void deleteBoardById(long id) {
         if (securityUtils.getCurrentUserId() != boardRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id)).getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + id)).getAdmin().getId())
             throw new NoPermissionException("Delete board with id: " + id + " not allowed");
         boardRepository.deleteById(id);
     }

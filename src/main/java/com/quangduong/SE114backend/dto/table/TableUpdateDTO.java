@@ -8,6 +8,8 @@ public class TableUpdateDTO {
 
     private String name;
 
+    private String description;
+
     private List<Long> memberIds;
 
     public long getId() {
@@ -16,6 +18,14 @@ public class TableUpdateDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {

@@ -29,7 +29,7 @@ public class LabelAPI {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> createLabel(@PathVariable("id") long id) {
         labelService.deleteLabel(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().build();
     }
 
 }

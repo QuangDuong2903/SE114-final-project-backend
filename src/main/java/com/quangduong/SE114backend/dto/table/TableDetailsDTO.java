@@ -13,6 +13,8 @@ public class TableDetailsDTO {
 
     private String name;
 
+    private String description;
+
     private List<UserInfoDTO> members;
 
     private List<TaskDetailsDTO> tasks;
@@ -23,6 +25,14 @@ public class TableDetailsDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UserInfoDTO getCreatedBy() {

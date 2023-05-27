@@ -28,6 +28,9 @@ public class BoardMapper {
     @Autowired
     private TableMapper tableMapper;
 
+    @Autowired
+    private LabelMapper labelMapper;
+
     public BoardDTO toDTO(BoardEntity entity) {
         BoardDTO dto = new BoardDTO();
         dto.setId(entity.getId());
@@ -52,6 +55,7 @@ public class BoardMapper {
                         .map(t -> tableMapper.toDetailsDTO(t))
                         .collect(Collectors.toList())
         );
+        dto.setLabels(entity.getLabels().stream().map(l -> labelMapper.toDTO(l)).toList());
         return dto;
     }
 

@@ -35,10 +35,7 @@ public class UserServiceImpl implements UserService {
             }
             return userMapper.toDTO(user);
         }
-
-        UserDTO res = userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
-        res.setNew(true);
-        return res;
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
     }
 
     @Override

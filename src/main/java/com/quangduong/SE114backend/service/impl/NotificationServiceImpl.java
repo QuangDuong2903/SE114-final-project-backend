@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
         if (entity.getType() != NotificationType.INVITATION)
             throw new NoPermissionException("Not allowed");
         if (entity.isAccept() || entity.isReject())
-            throw new NoPermissionException("Not allowed");
+            throw new NoPermissionException("Notification already responded");
         BoardEntity boardEntity = boardRepository.findById(entity.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + entity.getBoardId()));
         if (boardEntity.getAdmin().getId() == securityUtils.getCurrentUserId()

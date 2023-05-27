@@ -38,9 +38,6 @@ public class UserEntity extends BaseEntity {
     private List<TableEntity> tables = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<LabelEntity> labels = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
     private List<TaskEntity> tasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
@@ -108,14 +105,6 @@ public class UserEntity extends BaseEntity {
 
     public void setTables(List<TableEntity> tables) {
         this.tables = tables;
-    }
-
-    public List<LabelEntity> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<LabelEntity> labels) {
-        this.labels = labels;
     }
 
     public List<TaskEntity> getTasks() {

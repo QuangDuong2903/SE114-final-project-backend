@@ -35,7 +35,7 @@ public class TableAPI {
     @DeleteMapping("{id}")
     public ResponseEntity<TableDTO> deleteTable(@PathVariable("id") long id) {
         tableService.deleteTable(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().build();
     }
 
 }

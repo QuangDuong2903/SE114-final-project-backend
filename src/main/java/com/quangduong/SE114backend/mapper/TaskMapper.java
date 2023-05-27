@@ -32,9 +32,6 @@ public class TaskMapper {
     private TableRepository tableRepository;
 
     @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
     private TextAttributeMapper textAttributeMapper;
 
     @Autowired
@@ -61,21 +58,31 @@ public class TaskMapper {
     @Autowired
     private LabelAttributeRepository labelAttributeRepository;
 
+    @Autowired
+    private LabelRepository labelRepository;
+
     public TaskEntity toEntity(TaskDTO dto) {
         TaskEntity entity = new TaskEntity();
         TableEntity tableEntity = tableRepository.findById(dto.getTableId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found table with id: " + dto.getTableId()));
-        if (tableEntity.getBoard().getAdmin().getId() != dto.getUserId()
-                && !tableEntity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail())
-                && !tableEntity.getMembers().stream().anyMatch(m -> m.getId() == dto.getUserId()))
-            throw new NoPermissionException("Not allowed");
-        if (dto.getLabelAttributes() != null && !dto.getLabelAttributes().stream()
-                .allMatch(m ->
-                        securityUtils.getCurrentUser().getLabels().stream().anyMatch(l -> l.getId() == m.getLabelId())))
-            throw new NoPermissionException("Not allowed");
-        entity.setUser(userRepository.findById(dto.getUserId()).
-                orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId()))
-        );
+        if (!tableEntity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail())
+                && tableEntity.getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId()))
+            throw new NoPermissionException("You are not in table");
+        if (!tableEntity.getCreatedBy().equals(userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId())).getEmail())
+                && tableEntity.getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId()))
+            throw new NoPermissionException("User assigned to task not in table");
+        if (dto.getLabelAttributes() != null && dto.getLabelAttributes().stream()
+                .anyMatch(m -> tableEntity.getBoard().getLabels()
+                        .stream().noneMatch(l -> l.getId() == labelRepository.findById(m.getLabelId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Not found label with id: " + m.getLabelId()))
+                        .getId())
+                )
+        )
+            throw new NoPermissionException("Label not in board");
+
+        entity.setDescription(dto.getDescription());
+        entity.setUser(userRepository.findById(dto.getUserId()).get());
         entity.setTable(tableEntity);
         entity.setStatus(dto.getStatus());
         if (dto.getTextAttributes() != null)
@@ -102,14 +109,16 @@ public class TaskMapper {
     }
 
     public TaskEntity toEntity(TaskUpdateDTO dto, TaskEntity entity) {
-        if (entity.getTable().getBoard().getAdmin().getId() != securityUtils.getCurrentUserId()
-                && !entity.getTable().getCreatedBy().equals(securityUtils.getCurrentUser().getEmail())
-                && entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId()))
-            throw new NoPermissionException("Not allowed");
+        if (!entity.getTable().getCreatedBy().equals(securityUtils.getCurrentUser().getEmail())
+                && entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId()))
+            throw new NoPermissionException("You are not in table");
+        if (dto.getDescription() != null)
+            entity.setDescription(dto.getDescription());
         if (dto.getUserId() != null)
             if (entity.getTable().getMembers().stream().noneMatch(m -> m.getId() == dto.getUserId())
-                    && !entity.getCreatedBy().equals(securityUtils.getCurrentUser().getEmail()))
-                throw new NoPermissionException("User not allowed");
+                    && !entity.getCreatedBy().equals(userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId())).getEmail()))
+                throw new NoPermissionException("User not in table");
             else
                 entity.setUser(userRepository.findById(dto.getUserId())
                         .orElseThrow(() -> new ResourceNotFoundException("Not found user with id: " + dto.getUserId())));
@@ -233,6 +242,7 @@ public class TaskMapper {
     public TaskDetailsDTO toDetailsDTO(TaskEntity entity) {
         TaskDetailsDTO dto = new TaskDetailsDTO();
         dto.setId(entity.getId());
+        dto.setDescription(entity.getDescription());
         dto.setUser(userMapper.userInfoDTO(entity.getUser()));
         dto.setStatus(entity.getStatus());
         dto.setTextAttributes(entity.getTextAttributes().stream()
@@ -257,6 +267,7 @@ public class TaskMapper {
     public TaskDTO toDTO(TaskEntity entity) {
         TaskDTO dto = new TaskDTO();
         dto.setId(entity.getId());
+        dto.setDescription(entity.getDescription());
         dto.setTableId(entity.getTable().getId());
         dto.setUserId(entity.getUser().getId());
         dto.setStatus(entity.getStatus());

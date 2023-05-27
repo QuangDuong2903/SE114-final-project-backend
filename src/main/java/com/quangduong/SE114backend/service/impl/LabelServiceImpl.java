@@ -37,8 +37,9 @@ public class LabelServiceImpl implements LabelService {
         long id = dto.getId();
         LabelEntity entity = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found label with id: " + id));
-        if (entity.getUser().getId() != securityUtils.getCurrentUserId())
-            throw new NoPermissionException("Not allowed");
+        if (entity.getBoard().getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId())
+                && entity.getBoard().getAdmin().getId() != securityUtils.getCurrentUserId())
+            throw new NoPermissionException("You are not in board to edit label");
         return labelMapper.toDTO(labelRepository.save(labelMapper.toEntity(dto, entity)));
     }
 
@@ -47,8 +48,9 @@ public class LabelServiceImpl implements LabelService {
     public void deleteLabel(long id) {
         LabelEntity entity = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found label with id: " + id));
-        if (entity.getUser().getId() != securityUtils.getCurrentUserId())
-            throw new NoPermissionException("Not allowed");
+        if (entity.getBoard().getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId())
+                && entity.getBoard().getAdmin().getId() != securityUtils.getCurrentUserId())
+            throw new NoPermissionException("You are not in board to delete label");
         labelRepository.deleteById(id);
     }
 }

@@ -12,6 +12,10 @@ public class TableEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Lob
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "board_id")
     private BoardEntity board;
@@ -20,7 +24,7 @@ public class TableEntity extends BaseEntity {
     @JoinTable(name = "user_table", joinColumns = @JoinColumn(name = "table_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "table")
+    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL)
     private List<TaskEntity> tasks = new ArrayList<>();
 
     public String getName() {
@@ -29,6 +33,14 @@ public class TableEntity extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BoardEntity getBoard() {

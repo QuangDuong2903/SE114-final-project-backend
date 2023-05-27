@@ -16,8 +16,8 @@ public class LabelEntity extends BaseEntity {
     private String color;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
     @OneToMany(mappedBy = "value", cascade = CascadeType.ALL)
     private List<LabelAttributeEntity> labelAttributes = new ArrayList<>();
@@ -38,12 +38,12 @@ public class LabelEntity extends BaseEntity {
         this.color = color;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public BoardEntity getBoard() {
+        return board;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setBoard(BoardEntity board) {
+        this.board = board;
     }
 
     public List<LabelAttributeEntity> getLabelAttributes() {

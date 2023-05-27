@@ -1,6 +1,7 @@
 package com.quangduong.SE114backend.dto.label;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class LabelDTO {
 
@@ -10,6 +11,17 @@ public class LabelDTO {
 
     @NotBlank(message = "Color is required")
     private String color;
+
+    @NotNull(message = "Board id is required")
+    private Long boardId;
+
+    public Long getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
+    }
 
     public String getName() {
         return name;

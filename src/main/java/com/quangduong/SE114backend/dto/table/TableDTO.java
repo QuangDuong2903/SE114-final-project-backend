@@ -11,6 +11,9 @@ public class TableDTO {
     @NotBlank(message = "Table name is required")
     private String name;
 
+    @NotBlank(message = "Table description is required")
+    private String description;
+
     @NotNull(message = "Board id is is required")
     private Long boardId;
 
@@ -24,6 +27,14 @@ public class TableDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {

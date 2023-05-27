@@ -38,7 +38,7 @@ public class TableServiceImpl implements TableService {
                 .orElseThrow(() -> new ResourceNotFoundException("Not found board with id: " + dto.getBoardId()));
         if (boardEntity.getAdmin().getId() != securityUtils.getCurrentUserId()
                 && boardEntity.getMembers().stream().noneMatch(m -> m.getId() == securityUtils.getCurrentUserId())
-        ) throw new NoPermissionException("Not allowed");
+        ) throw new NoPermissionException("Not allowed to create table in this board");
         return tableMapper.toDetailsDTO(tableRepository.save(tableMapper.toEntity(dto)));
     }
 

@@ -1,8 +1,7 @@
 package com.quangduong.SE114backend.exception;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quangduong.SE114backend.payload.response.ErrorResponse;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -17,13 +16,12 @@ public class AccessDeniedExceptionHandler implements AccessDeniedHandler {
     private static final Logger logger = LoggerFactory.getLogger(AccessDeniedExceptionHandler.class);
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         logger.error(accessDeniedException.getMessage());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String json = new Gson()
-                .toJson(new ErrorResponse(HttpServletResponse.SC_FORBIDDEN, "Access Denied", request.getRequestURI()));
+        String json = new ObjectMapper().writeValueAsString(new ErrorResponse(HttpServletResponse.SC_FORBIDDEN, "Access Denied", request.getRequestURI()));
         response.getWriter().print(json);
     }
 }

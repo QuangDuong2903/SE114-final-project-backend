@@ -5,6 +5,7 @@ import com.quangduong.SE114backend.dto.label.LabelUpdateDTO;
 import com.quangduong.SE114backend.service.LabelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class LabelAPI {
 
     @PostMapping
     public ResponseEntity<LabelDTO> createLabel(@RequestBody @Valid LabelDTO dto) {
-        return ResponseEntity.ok(labelService.createLabel(dto));
+        return new ResponseEntity<>(labelService.createLabel(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")

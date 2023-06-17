@@ -18,7 +18,6 @@ services:
       - es_network
 
   spring-boot-app:
-    container_name: work-management-backend
     restart: always
     build: .
     ports:

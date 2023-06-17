@@ -96,6 +96,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/greeting").permitAll()
+                .requestMatchers("/todos/**").permitAll()
+                .requestMatchers("/weather**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()

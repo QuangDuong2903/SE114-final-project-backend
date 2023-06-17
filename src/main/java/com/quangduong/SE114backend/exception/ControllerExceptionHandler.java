@@ -20,7 +20,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e, HttpServletRequest request) {
         logger.error(e.getMessage());
-        return new ResponseEntity<ErrorResponse>(
+        return new ResponseEntity<>(
                 new ErrorResponse(HttpServletResponse.SC_BAD_REQUEST, e.getMessage(), request.getRequestURI()),
                 HttpStatus.BAD_REQUEST);
     }
@@ -28,7 +28,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NoPermissionException.class)
     public ResponseEntity<ErrorResponse> noPermissionExceptionHandler(NoPermissionException e, HttpServletRequest request) {
         logger.error(e.getMessage());
-        return new ResponseEntity<ErrorResponse>(
+        return new ResponseEntity<>(
                 new ErrorResponse(HttpServletResponse.SC_FORBIDDEN, e.getMessage(), request.getRequestURI()),
                 HttpStatus.FORBIDDEN);
     }
@@ -36,7 +36,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException e, HttpServletRequest request) {
         logger.error(e.getMessage());
-        return new ResponseEntity<ErrorResponse>(
+        return new ResponseEntity<>(
                 new ErrorResponse(HttpServletResponse.SC_NOT_FOUND, e.getMessage(), request.getRequestURI()),
                 HttpStatus.NOT_FOUND);
     }
